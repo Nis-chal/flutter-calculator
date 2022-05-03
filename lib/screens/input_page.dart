@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:calculator/components/button.dart';
+import 'dart:math';
 
 class InputPage extends StatefulWidget {
   InputPage({Key? key}) : super(key: key);
@@ -10,14 +11,86 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   final _globalkey = GlobalKey<FormState>();
+  String firstValue = "";
+  String secondValue = "";
   String _history = "";
   String _expression = "";
+  String _operation = "";
 
   void allClear(String text) {
     setState(() {
       _history = '';
       _expression = '';
+      firstValue = '';
+      secondValue = '';
+      _operation = '';
     });
+  }
+
+  void operationSign(String text) {
+    setState(() {
+      _operation = text;
+      _history = "";
+      firstValue = _expression;
+      _expression = "";
+    });
+  }
+
+  void evaluate(String text) {
+    print("hello");
+    if (_operation == "") {
+      print('yellow');
+    } else if (_operation == "+") {
+      setState(() {
+        secondValue = _expression;
+        _expression =
+            (double.parse(firstValue) + double.parse(secondValue)).toString();
+        _history = _expression;
+      });
+    } else if (_operation == "-") {
+      setState(() {
+        secondValue = _expression;
+
+        _expression =
+            (double.parse(firstValue) - double.parse(secondValue)).toString();
+        _history = _expression;
+      });
+    } else if (_operation == "/") {
+      setState(() {
+        secondValue = _expression;
+
+        _expression =
+            (double.parse(firstValue) / double.parse(secondValue)).toString();
+        _history = _expression;
+      });
+    } else if (_operation == "*") {
+      setState(() {
+        secondValue = _expression;
+
+        _expression =
+            (double.parse(firstValue) * double.parse(secondValue)).toString();
+        _history = _expression;
+      });
+    } else if (_operation == "%") {
+      setState(() {
+        secondValue = _expression;
+
+        _expression =
+            (double.parse(firstValue).remainder(double.parse(secondValue)))
+                .toString();
+        _history = _expression;
+      });
+    } else if (_operation == "^") {
+      setState(() {
+        secondValue = _expression;
+
+        _expression =
+            "${(pow(double.parse(firstValue), double.parse(secondValue)))}";
+        _history = _expression;
+      });
+    } else {
+      print('error');
+    }
   }
 
   void numClick(String text) {
@@ -77,13 +150,13 @@ class _InputPageState extends State<InputPage> {
                       fillColor: 0XFF9FBFDA,
                     ),
                     CalcBtn(
-                      text: '+/-',
-                      callback: allClear,
+                      text: '^',
+                      callback: operationSign,
                       fillColor: 0XFF9FBFDA,
                     ),
                     CalcBtn(
                       text: '%',
-                      callback: allClear,
+                      callback: operationSign,
                       fillColor: 0XFFF7B701,
                     ),
                     CalcBtn(
@@ -100,58 +173,58 @@ class _InputPageState extends State<InputPage> {
                     ),
                     CalcBtn(
                       text: '/',
-                      callback: allClear,
+                      callback: operationSign,
                       fillColor: 0XFFF7B701,
                     ),
                     CalcBtn(
                       text: '4',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '5',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '6',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
-                      text: 'AC',
-                      callback: allClear,
+                      text: '*',
+                      callback: operationSign,
                       fillColor: 0XFFF7B701,
                     ),
                     CalcBtn(
                       text: '1',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '2',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '3',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
-                      text: ',',
-                      callback: allClear,
+                      text: '+',
+                      callback: operationSign,
                       fillColor: 0XFFF7B701,
                     ),
                     CalcBtn(
                       text: '0',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '3',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '.',
-                      callback: allClear,
+                      callback: numClick,
                     ),
                     CalcBtn(
                       text: '=',
-                      callback: allClear,
+                      callback: evaluate,
                       fillColor: 0XFFF7B701,
                     ),
                   ],
