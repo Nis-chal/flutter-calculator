@@ -27,6 +27,14 @@ class _InputPageState extends State<InputPage> {
     });
   }
 
+  void backSpace(String text) {
+    setState(() {
+      _expression = _expression.substring(0, _expression.length - 1);
+      _history = _expression;
+      print('zero');
+    });
+  }
+
   void operationSign(String text) {
     setState(() {
       _operation = text;
@@ -45,6 +53,11 @@ class _InputPageState extends State<InputPage> {
         secondValue = _expression;
         _expression =
             (double.parse(firstValue) + double.parse(secondValue)).toString();
+        _history = _expression;
+      });
+    } else if (_operation == "<") {
+      setState(() {
+        _expression = _history.substring(0, _history.length - 1);
         _history = _expression;
       });
     } else if (_operation == "-") {
@@ -145,8 +158,8 @@ class _InputPageState extends State<InputPage> {
                       fillColor: 0XFF9FBFDA,
                     ),
                     CalcBtn(
-                      text: 'C',
-                      callback: allClear,
+                      text: '<',
+                      callback: backSpace,
                       fillColor: 0XFF9FBFDA,
                     ),
                     CalcBtn(
@@ -215,12 +228,12 @@ class _InputPageState extends State<InputPage> {
                       callback: numClick,
                     ),
                     CalcBtn(
-                      text: '3',
+                      text: '.',
                       callback: numClick,
                     ),
                     CalcBtn(
-                      text: '.',
-                      callback: numClick,
+                      text: '-',
+                      callback: operationSign,
                     ),
                     CalcBtn(
                       text: '=',
